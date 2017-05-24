@@ -22,6 +22,20 @@ function getNewMovies(searchVal) {
 
 }
 
+
+//get new movie credits from movie db api
+function getNewMoviesCredits(movieId) {
+	return new Promise(function(resolve,reject){
+		
+		$.ajax({
+			url:`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&page=1&include_adult=false`
+		}).done(function(movieData){
+			resolve(movieData);
+		});
+	});
+
+}
+
 //get my movies from firebase
 function getMyMovies(user, searchVal) {
 	return new Promise(function(resolve,reject){
@@ -91,6 +105,7 @@ function editMovie(movieObj, movieId) {
 
 module.exports = {
   getNewMovies,//query movie db api
+  getNewMoviesCredits, //query movie db for actors
   getMyMovies,//query firebase 
   addMovie,//add to watchlist
   deleteMovie, //delete from firebase
