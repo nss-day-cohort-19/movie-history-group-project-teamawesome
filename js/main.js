@@ -102,3 +102,14 @@ $(document).on("click", ".delete", function() {
 	db.deleteMovie(movieId);
 	//logic for reloading based on which button is selected already
 });
+
+db.getNewMovies('Rambo')
+.then( function(data) {
+	return sort.grabId(data);
+	}
+).then( function(idArray) {
+	return db.getNewMoviesCredits(idArray);
+}).then ( function(movieObj) {
+	console.log('function', sort.concatMovie);
+	sort.concatMovie(movieObj);
+});
