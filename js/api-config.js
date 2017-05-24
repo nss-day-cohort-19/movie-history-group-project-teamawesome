@@ -1,8 +1,9 @@
 "use strict";
 
  let firebase = require("firebase/app"),
-     fb = require("./api-getter"),
-     fbData = fb();
+     dbs = require("./api-getter"),
+     fbData = dbs.getKey(),
+     movieData = dbs.getmovieDBKey();
 
  require("firebase/auth");
  require("firebase/database");

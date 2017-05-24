@@ -17,6 +17,7 @@ function getNewMovies(searchVal) {
 			url:`https://api.themoviedb.org/3/search/movie?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&query=${searchVal}&page=1&include_adult=false`
 		}).done(function(movieData){
 			resolve(movieData);
+			console.log('moviedata', movieData);
 		});
 	});
 
