@@ -36,7 +36,7 @@ $("#showUnwatched").click( () => {
 	loadMoviesToDOM(1);
 });
 
-$("#findNew").click( () => {
+$("#findNewMovies").click( () => {
 	let newMovies = themoviedb($("#searchInput").value);
 });
 
@@ -69,3 +69,6 @@ $(document).on("click", ".watched", function() {
 $(document).on("click", ".rating", function() {
 
 });
+
+
+db.getNewMovies('Rambo');
