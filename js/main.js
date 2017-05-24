@@ -41,6 +41,7 @@ $("#showUnwatched").click( () => {
 	loadMoviesToDOM(1);
 });
 
+
 $("#unTracked").click( () => {
 	//hightlight button
 	let newMovies = themoviedb($("#searchInput").value);
@@ -109,3 +110,5 @@ $(document).on("click", ".delete", function() {
 	db.deleteMovie(movieId);
 	//logic for reloading based on which button is selected already
 });
+
+db.getNewMovies('Rambo');
