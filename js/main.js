@@ -4,7 +4,7 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-    themoviedb = require("./manipulation"),
+    sort = require("./manipulation"),
     rateyo = require('../lib/node_modules/rateyo/min/jquery.rateyo.min');
 
 function loadMoviesToDOM (type) {
@@ -40,7 +40,6 @@ $("#showUnwatched").click( () => {
 	//highlight button
 	loadMoviesToDOM(1);
 });
-
 
 $("#unTracked").click( () => {
 	//hightlight button
@@ -111,4 +110,13 @@ $(document).on("click", ".delete", function() {
 	//logic for reloading based on which button is selected already
 });
 
-db.getNewMovies('Rambo');
+db.getNewMovies('Rambo')
+.then( function(data) {
+	return sort.grabId(data);
+	}
+).then( function(idArray) {
+	return db.getNewMoviesCredits(idArray);
+}).then ( function(movieObj) {
+	console.log('function', sort.concatMovie);
+	sort.concatMovie(movieObj);
+});
