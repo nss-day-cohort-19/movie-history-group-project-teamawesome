@@ -4,7 +4,7 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-    themoviedb = require("./manipulation");
+    sort = require("./manipulation");
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
@@ -37,7 +37,7 @@ $("#showUnwatched").click( () => {
 });
 
 $("#findNewMovies").click( () => {
-	let newMovies = themoviedb($("#searchInput").value);
+	// let newMovies = themoviedb($("#searchInput").value);
 });
 
 $("#logging").click( () => {
@@ -71,4 +71,13 @@ $(document).on("click", ".rating", function() {
 });
 
 
-db.getNewMovies('Rambo');
+db.getNewMovies('Rambo')
+.then( function(data) {
+	return sort.grabId(data);
+	}
+).then( function(idArray) {
+	return db.getNewMoviesCredits(idArray);
+}).then ( function(movieObj) {
+	console.log('function', sort.concatMovie);
+	sort.concatMovie(movieObj);
+});
