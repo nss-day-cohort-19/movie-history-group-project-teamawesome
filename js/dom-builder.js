@@ -5,6 +5,7 @@ var $ = require('jquery'),
     cardsTemplate = require('../templates/card.hbs');
 
 function populateCards(movieInfo) {
+	console.log("movieInfo", movieInfo);
   $('#movieDiv').html(cardsTemplate(movieInfo));
 }
 
