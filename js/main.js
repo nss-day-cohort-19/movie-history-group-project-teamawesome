@@ -43,19 +43,41 @@ $("#showWatched").click( () => {
 });
 
 $("#showUnwatched").click( () => {
-	//highlight button
-	loadMoviesToDOM(1);
+	
 });
 
 $("#unTracked").click( () => {
-	//hightlight button
-	getNewMovies($("#searchInput").value);
+	let input = $("#searchInput").val();
+		// console.log("input", input);
+		db.getNewMovies(input)
+		.then(function(moviesArray){
+			moviesArray.forEach(function(element){
+				// console.log("element", element);
+				db.getNewMoviesCredits(element.id)
+				.then(function(actorsArray){
+					element.actors = actorsArray;
+					populate.populateCards(moviesArray);
+				});
+			});
+		});
 });
 
 $("#searchInput").keyup( (keyin) => {
 	if(keyin.keyCode == 13) {
 		//highlight  "show untracked" button
-		getNewMovies($("#searchInput").value);
+		let input = $("#searchInput").val();
+		// console.log("input", input);
+		db.getNewMovies(input)
+		.then(function(moviesArray){
+			moviesArray.forEach(function(element){
+				// console.log("element", element);
+				db.getNewMoviesCredits(element.id)
+				.then(function(actorsArray){
+					element.actors = actorsArray;
+					populate.populateCards(moviesArray);
+				});
+			});
+		});
 	}
 });
 
@@ -114,15 +136,5 @@ $(document).on("click", ".delete", function() {
 });
 
 
-db.getNewMovies('drama')
-.then( function(data) {
-	return sort.grabId(data);
-}).then( function(idArray) {
-	return db.getNewMoviesCredits(idArray);
-}).then ( function(movieObj) {
-  return sort.concatMovie(movieObj);
-}).then(function(movieHolder) {
-  return populate.populateCards(movieHolder);
-});
 
-db.addMovie('Billy Madison');
+// db.addMovie('Billy Madison');
