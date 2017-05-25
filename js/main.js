@@ -6,8 +6,8 @@ let $ = require('jquery'),
     templates = require("./dom-builder"),
     user = require("./user"),
     sort = require("./manipulation"),
-    populate = require("./dom-builder"),
-    rater = require('./rating');
+    populate = require("./dom-builder");
+    // rater = require('./rating');
 
 // Handlebars helper that works with bootstrap grid system to form rows between every 3 items.
 Handlebars.registerHelper('grouped_each', function(every, context, options) {
@@ -168,11 +168,23 @@ $(document).on('click', ".addtowatch", function(event){
     }
 });
 
-$(document).on("click", ".rating", function() {
-	let movieId = $(this).data("movie-id");
-	let rater = $(this).rater();
-	let rating = rater.rater("rating");
-	db.setRating(movieId, rating);
+// $(document).on("click", ".rating", function() {
+// 	let movieId = $(this).data("movie-id");
+// 	let rater = $(this).rater();
+// 	let rating = rater.rater("rating");
+// 	db.setRating(movieId, rating);
+// });
+
+$(document).on('click', '.card', function(event) {
+  let stars = $(event.currentTarget).find('.rating .star');
+    for (let i = 0; i < stars.length; i++) {
+      if ($(event.target).data('count') >= $(stars[i]).data('count')) {
+        $(stars[i]).addClass('clicked');
+      } else {
+        $(stars[i]).removeClass('clicked');
+      }
+    }
+
 });
 
 $(document).on("click", ".delete", function() {
