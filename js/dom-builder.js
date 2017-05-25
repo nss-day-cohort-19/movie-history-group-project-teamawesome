@@ -17,13 +17,13 @@ $("#unTracked").click(function() {
 //user clicks unwatched search filter and breadcrumbs appear
 $("#showUnwatched").click(function() {
     $("#breadcrumb").html(`<a href="#!" class="breadcrumb black-text">Search Results</a>`);
-    $("#breadcrumb").append(`<a href="#!" class="breadcrumb black-text">Show Untracked</a>`);
+    $("#breadcrumb").append(`<a href="#!" class="breadcrumb black-text">Unwatched</a>`);
 });
 
 //user clicks watched search filter and breadcrumbs appear
 $("#showWatched").click(function() {
     $("#breadcrumb").html(`<a href="#!" class="breadcrumb black-text">Search Results</a>`);
-    $("#breadcrumb").append(`<a href="#!" class="breadcrumb black-text">Show Unwatched</a>`);
+    $("#breadcrumb").append(`<a href="#!" class="breadcrumb black-text">Watched</a>`);
 });
 
 module.exports = {populateCards};
