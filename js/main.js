@@ -4,7 +4,6 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-
     sort = require("./manipulation"),
     populate = require("./dom-builder"),
     rater = require('./rating');
@@ -108,7 +107,7 @@ $(document).on("click", ".delete", function() {
 });
 
 
-db.getNewMovies('Billy Madison')
+db.getNewMovies('drama')
 .then( function(data) {
 	return sort.grabId(data);
 }).then( function(idArray) {
