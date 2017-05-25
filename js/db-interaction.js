@@ -60,7 +60,7 @@ function getNewMoviesCredits(movieId) {
 function getMyMovies(user, searchVal) {
 	return new Promise(function(resolve,reject){
 		$.ajax({
-			url:`${firebase.getFBsettings().databaseURL}/songs.json?orderBy="uid"&equalTo="${user}"`
+			url:`${firebase.getFBsettings().databaseURL}/movies.json?orderBy="uid"&equalTo="${user}"`
 		}).done(function(movieData){
 			resolve(movieData);
 		});
