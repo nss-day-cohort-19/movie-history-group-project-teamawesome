@@ -14,13 +14,13 @@ function grabId(obj) {
         movieHolder.push(x);
 
     }
-    console.log('object at grab id', movieHolder);
+    // console.log('object at grab id', movieHolder);
     return idArray;
 }
 
 function concatMovie(castObj) {
     // console.log('movie Ob at concatmovie', castObj.cast);
-    console.log('movie holder length', movieHolder.length);
+    // console.log('movie holder length', movieHolder.length);
 
     let j = 0;
     for (let j = 0; j < movieHolder.length; j++) {
@@ -30,7 +30,7 @@ function concatMovie(castObj) {
         }
         movieHolder[j].actors = castArray;
     }
-    console.log('movieHolder', movieHolder);
+    // console.log('movieHolder', movieHolder);
     return movieHolder;
 }
 

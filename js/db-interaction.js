@@ -12,12 +12,12 @@ let $ = require('jquery'),
 //get new movies from movie db api
 function getNewMovies(searchVal) {
 	return new Promise(function(resolve,reject){
-		
+
 		$.ajax({
 			url:`https://api.themoviedb.org/3/search/movie?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&query=${searchVal}&page=1&include_adult=false`
 		}).done(function(movieData){
 			resolve(movieData);
-			console.log('moviedata', movieData);
+			// console.log('moviedata', movieData);
 		});
 	});
 
@@ -108,7 +108,7 @@ function editMovie(movieObj, movieId) {
 module.exports = {
   getNewMovies,//query movie db api
   getNewMoviesCredits, //query movie db for actors
-  getMyMovies,//query firebase 
+  getMyMovies,//query firebase
   addMovie,//add to watchlist
   deleteMovie, //delete from firebase
   editMovie //toggle boolean for watched
