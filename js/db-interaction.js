@@ -68,6 +68,7 @@ function getMyMovies(user, searchVal) {
 
 }
 
+
 function addMovieToFB(movieObj) {
 	console.log("add movie", movieObj);
 	return new Promise(function(resolve, reject){
