@@ -17,12 +17,18 @@
   <main>
   	<div id="welcome"><h1>Welcome to this movie history thing we made</h1></div>
 	  <div id="mainContainer" class="container hidden">
-		<div id="breadcrumb">Movie History</div>
+        <nav>
+            <div class="nav-wrapper">
+                <div id="breadcrumb" class="col s12">
+                    <a href="#!" class="breadcrumb">Search Results</a>
+                </div>
+            </div>
+        </nav>
+
 		<div id="filterDiv" class="row">
 			<a class="waves-effect waves-light btn" id="unTracked">Show Untracked</a>
 			<a class="waves-effect waves-light btn" id="showUnwatched">Show Unwatched</a>
 			<a class="waves-effect waves-light btn" id="showWatched">Show Watched</a>
-			<a class="waves-effect waves-light btn" id="showFavorites">Favorites</a>
   	 	 </div>
 		  <div id="movieDiv" class="row"></div>
 	  </div>
