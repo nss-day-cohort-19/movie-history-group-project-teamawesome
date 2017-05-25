@@ -4,15 +4,13 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-
     sort = require("./manipulation"),
     populate = require("./dom-builder"),
     rater = require('./rating');
 
-
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
-	db.getNewMovies(currentUser)
+	db.getMyMovies(currentUser)
 	.then( (data) => {
 		var allMovies = Object.keys(data);  //give keys to data to id buttons
 		allMovies.forEach( (key) => {
@@ -34,6 +32,11 @@ function loadMoviesToDOM (type) {
 	});
 }
 
+function getNewMovies (search) {
+ 	let newMovieList = [];
+	templates.newMovieList(newMovieList);
+}
+
 $("#showWatched").click( () => {
 	//highlight button
 	loadMoviesToDOM(2);
@@ -46,15 +49,13 @@ $("#showUnwatched").click( () => {
 
 $("#unTracked").click( () => {
 	//hightlight button
-	let newMovies = sort($("#searchInput").value);
-	templates.newMovieList(newMovies);
+	getNewMovies($("#searchInput").value);
 });
 
 $("#searchInput").keyup( (keyin) => {
 	if(keyin.keyCode == 13) {
 		//highlight  "show untracked" button
-		let newMovies = sort($("#searchInput").value);
-		templates.newMovieList(newMovies);
+		getNewMovies($("#searchInput").value);
 	}
 });
 
@@ -65,8 +66,13 @@ $("#showFavorites").click( () => {
 
 $("#auth-btn").click( () => {
 	if(user.getUser() === null) {  //if there is no user logIn, otherwise logout
-		user.logInGoogle();
-		$("#mainContainer").removeClass("hidden");
+		user.logInGoogle().
+		then( () => {
+			$("#mainContainer").removeClass("hidden");
+			$("#welcome").addClass("hidden");
+			},
+			() => { window.alert("Failed to log in");}
+		);
 	}else {
 		user.logOut();
 		$("#mainContainer").addClass("hidden");
