@@ -1,17 +1,19 @@
-{{#each this}}
+  {{#grouped_each 3 this}}
+  <div class="row">
+    {{#each this}}
     <div class="col lg2 m4 s6">
       <div class="card">
-        <div class="card-image"> 
+        <div class="card-image">
           {{#if fb}}
-          <span> 
-            <div class="chip right"> 
-              <i class="close material-icons">close</i> 
-            </div> 
+          <span>
+            <div class="chip right">
+              <i class="close material-icons">close</i>
+            </div>
           </span>
           {{else}}
-          {{/if}} 
+          {{/if}}
           {{#if img}}
-          <img class="cardImages" src="http://image.tmdb.org/t/p/w342/{{img}}" alt="{{title}}"> 
+          <img class="cardImages" src="http://image.tmdb.org/t/p/w342/{{img}}" alt="{{title}}">
           {{else}}
           {{/if}}
         </div>
@@ -28,13 +30,39 @@
           {{/if}}
           {{#if ratings}}
             <li>{{rating}}</li>
-          {{/if}} 
+          {{/if}}
+          <div class="rating">
+              <span class="star" data-count="0">★</span>
+              <span class="star" data-count="1">★</span>
+              <span class="star" data-count="2">★</span>
+              <span class="star" data-count="3">★</span>
+              <span class="star" data-count="4">★</span>
+              <span class="star" data-count="5">★</span>
+              <span class="star" data-count="6">★</span>
+              <span class="star" data-count="7">★</span>
+              <span class="star" data-count="8">★</span>
+              <span class="star" data-count="9">★</span>
+          </div>
           {{#if mdn}}
           <a class="waves-effect waves-light btn blue-grey lighten-2 addtowatch"><i class="material-icons left">add</i>Watchlist</a>
           {{else}}
-          <a class="waves-effect waves-light btn blue-grey lighten-2"><i class="material-icons left">add</i>STARS</a>
+          <div class="rating">
+              <span class="star" data-count="0">★</span>
+              <span class="star" data-count="1">★</span>
+              <span class="star" data-count="2">★</span>
+              <span class="star" data-count="3">★</span>
+              <span class="star" data-count="4">★</span>
+              <span class="star" data-count="5">★</span>
+              <span class="star" data-count="6">★</span>
+              <span class="star" data-count="7">★</span>
+              <span class="star" data-count="8">★</span>
+              <span class="star" data-count="9">★</span>
+          </div>
           {{/if}}
         </div>
       </div>
     </div>
 {{/each}}
+
+  </div>
+  {{/grouped_each}}
