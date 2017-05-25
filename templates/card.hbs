@@ -1,4 +1,6 @@
-{{#each this}}
+  {{#grouped_each 3 this}}
+  <div class="row">
+    {{#each this}}
     <div class="col lg2 m4 s6">
       <div class="card">
         <div class="card-image"> 
@@ -38,3 +40,6 @@
       </div>
     </div>
 {{/each}}
+
+  </div>
+  {{/grouped_each}}

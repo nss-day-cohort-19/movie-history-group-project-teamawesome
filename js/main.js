@@ -2,11 +2,28 @@
 
 let $ = require('jquery'),
     db = require("./db-interaction"),
+    Handlebars = require('hbsfy/runtime'),
     templates = require("./dom-builder"),
     user = require("./user"),
     sort = require("./manipulation"),
     populate = require("./dom-builder"),
     rater = require('./rating');
+
+// Handlebars helper that works with bootstrap grid system to form rows between every 3 items.
+Handlebars.registerHelper('grouped_each', function(every, context, options) {
+    var out = "", subcontext = [], i;
+    if (context && context.length > 0) {
+        for (i = 0; i < context.length; i++) {
+            if (i > 0 && i % every === 0) {
+                out += options.fn(subcontext);
+                subcontext = [];
+            }
+            subcontext.push(context[i]);
+        }
+        out += options.fn(subcontext);
+    }
+    return out;
+});
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
