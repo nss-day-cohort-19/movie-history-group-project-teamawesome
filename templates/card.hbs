@@ -1,19 +1,45 @@
-{{#each this}}
-  {{#if img}}
+  {{#grouped_each 3 this}}
+  <div class="row">
+    {{#each this}}
     <div class="col lg2 m4 s6">
       <div class="card">
-        <div class="card-image"> <span> <div class="chip right"> <i class="close material-icons">close</i> </div> </span> <img class="cardImages" src="http://image.tmdb.org/t/p/w342/{{img}}" alt="{{title}}"> </div>
+        <div class="card-image"> 
+          {{#if fb}}
+          <span> 
+            <div class="chip right"> 
+              <i class="close material-icons">close</i> 
+            </div> 
+          </span>
+          {{else}}
+          {{/if}} 
+          {{#if img}}
+          <img class="cardImages" src="http://image.tmdb.org/t/p/w342/{{img}}" alt="{{title}}"> 
+          {{else}}
+          {{/if}}
+        </div>
         <div class="card-content">
           <li>{{title}}</li>
           <li>{{releaseDate}}</li>
-          <li>{{actors}}</li>
+          <li>
+            {{#actors}}
+              {{this}}
+            {{/actors}}
+          </li>
           {{#if boolian}}
             <li>{{boolian}}</li>
           {{/if}}
           {{#if ratings}}
             <li>{{rating}}</li>
-          {{/if}} <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a> </div>
+          {{/if}} 
+          {{#if mdn}}
+          <a class="waves-effect waves-light btn blue-grey lighten-2"><i class="material-icons left">add</i>Watchlist</a>
+          {{else}}
+          <a class="waves-effect waves-light btn blue-grey lighten-2"><i class="material-icons left">add</i>STARS</a>
+          {{/if}}
+        </div>
       </div>
     </div>
-  {{/if}}
 {{/each}}
+
+  </div>
+  {{/grouped_each}}
