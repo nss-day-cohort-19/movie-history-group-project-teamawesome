@@ -5,6 +5,8 @@ let $ = require('jquery'),
     templates = require("./dom-builder"),
     user = require("./user"),
     sort = require("./manipulation"),
+    populate = require("./dom-builder");
+
     rateyo = require('../lib/node_modules/rateyo/min/jquery.rateyo.min');
 
 function loadMoviesToDOM (type) {
@@ -110,13 +112,13 @@ $(document).on("click", ".delete", function() {
 	//logic for reloading based on which button is selected already
 });
 
-db.getNewMovies('Rambo')
+db.getNewMovies('Fight Club')
 .then( function(data) {
 	return sort.grabId(data);
-	}
-).then( function(idArray) {
+}).then( function(idArray) {
 	return db.getNewMoviesCredits(idArray);
 }).then ( function(movieObj) {
-	console.log('function', sort.concatMovie);
-	sort.concatMovie(movieObj);
+  return sort.concatMovie(movieObj);
+}).then(function(movieHolder) {
+  return populate.populateCards(movieHolder);
 });
