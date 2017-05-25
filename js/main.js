@@ -4,12 +4,12 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-    sort = require("./manipulation"),
-    rateyo = require('../lib/node_modules/rateyo/min/jquery.rateyo.min');
+    sort = require("./manipulation");
+    //rateyo = require('../lib/node_modules/rateyo/min/jquery.rateyo.min');
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
-	db.getMovies(currentUser)
+	db.getNewMovies(currentUser)
 	.then( (data) => {
 		var allMovies = Object.keys(data);  //give keys to data to id buttons
 		allMovies.forEach( (key) => {
@@ -43,14 +43,14 @@ $("#showUnwatched").click( () => {
 
 $("#unTracked").click( () => {
 	//hightlight button
-	let newMovies = themoviedb($("#searchInput").value);
+	let newMovies = sort($("#searchInput").value);
 	templates.newMovieList(newMovies);
 });
 
 $("#searchInput").keyup( (keyin) => {
 	if(keyin.keyCode == 13) {
 		//highlight  "show untracked" button
-		let newMovies = themoviedb($("#searchInput").value);
+		let newMovies = sort($("#searchInput").value);
 		templates.newMovieList(newMovies);
 	}
 });
@@ -59,9 +59,10 @@ $("#showFavorites").click( () => {
 	loadMoviesToDOM(3);
 });
 
-$("#logging").click( () => {
+
+$("#auth-btn").click( () => {
 	if(user.getUser() === null) {  //if there is no user logIn, otherwise logout
-		user.googleLogIn();
+		user.logInGoogle();
 		$("#mainContainer").removeClass("hidden");
 	}else {
 		user.logOut();
@@ -110,7 +111,7 @@ $(document).on("click", ".delete", function() {
 	//logic for reloading based on which button is selected already
 });
 
-db.getNewMovies('Rambo')
+db.getNewMovies('Billy Madison')
 .then( function(data) {
 	return sort.grabId(data);
 	}
@@ -120,3 +121,5 @@ db.getNewMovies('Rambo')
 	console.log('function', sort.concatMovie);
 	sort.concatMovie(movieObj);
 });
+
+db.addMovie('Billy Madison');

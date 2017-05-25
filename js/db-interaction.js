@@ -25,17 +25,16 @@ function getNewMovies(searchVal) {
 
 
 //get new movie credits from movie db api
-function getNewMoviesCredits(idArray) {
+function getNewMoviesCredits(movieId) {
 	return new Promise(function(resolve,reject){
-		idArray.forEach(function(i) {
-			$.ajax({
-				url:`https://api.themoviedb.org/3/movie/${i}/credits?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&page=1&include_adult=false`
-			}).done(function(movieData){
-				resolve(movieData);
-				// console.log('actor info', movieData);
-			});
+		
+		$.ajax({
+			url:`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&page=1&include_adult=false`
+		}).done(function(movieData){
+			resolve(movieData);
 		});
 	});
+
 }
 
 //get my movies from firebase
@@ -51,7 +50,7 @@ function getMyMovies(user, searchVal) {
 }
 
 function addMovie(movieObj) {
-	console.log("add song", movieObj);
+	console.log("add movie", movieObj);
 	return new Promise(function(resolve, reject){
 		$.ajax({
 			url:`${firebase.getFBsettings().databaseURL}/movies.json`,
@@ -93,7 +92,7 @@ function getMovie(movieId) {
 // GET - Requests/read data from a specified resource
 // PUT - Update data to a specified resource. Takes two parameters.
 //PATCH - update only the changes
-function editMovie(movieObj, movieId) {
+function setRating(movieObj, movieId, rating) {
 	return new Promise(function(resolve,reject){
 		$.ajax({
 			url:`${firebase.getFBsettings().databaseURL}/movies/${movieId}.json`,
@@ -111,5 +110,5 @@ module.exports = {
   getMyMovies,//query firebase 
   addMovie,//add to watchlist
   deleteMovie, //delete from firebase
-  editMovie //toggle boolean for watched
+  setRating //toggle boolean for watched
 };
