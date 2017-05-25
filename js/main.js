@@ -4,13 +4,15 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
+
     sort = require("./manipulation"),
     populate = require("./dom-builder"),
     rater = require('./rating');
 
+
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
-	db.getMovies(currentUser)
+	db.getNewMovies(currentUser)
 	.then( (data) => {
 		var allMovies = Object.keys(data);  //give keys to data to id buttons
 		allMovies.forEach( (key) => {
@@ -60,9 +62,10 @@ $("#showFavorites").click( () => {
 	loadMoviesToDOM(3);
 });
 
-$("#logging").click( () => {
+
+$("#auth-btn").click( () => {
 	if(user.getUser() === null) {  //if there is no user logIn, otherwise logout
-		user.googleLogIn();
+		user.logInGoogle();
 		$("#mainContainer").removeClass("hidden");
 	}else {
 		user.logOut();
@@ -104,7 +107,8 @@ $(document).on("click", ".delete", function() {
 	//logic for reloading based on which button is selected already
 });
 
-db.getNewMovies('Fight Club')
+
+db.getNewMovies('Billy Madison')
 .then( function(data) {
 	return sort.grabId(data);
 }).then( function(idArray) {
@@ -114,3 +118,5 @@ db.getNewMovies('Fight Club')
 }).then(function(movieHolder) {
   return populate.populateCards(movieHolder);
 });
+
+db.addMovie('Billy Madison');
