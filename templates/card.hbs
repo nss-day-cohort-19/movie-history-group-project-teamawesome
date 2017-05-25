@@ -1,0 +1,21 @@
+{{#each this}}
+    <div class="col lg2 m4 s6">
+      <div class="card">
+        <div class="card-image">
+          <img class="cardImages" src="http://image.tmdb.org/t/p/w342/{{img}}" alt="{{title}}">
+        </div>
+        <div class="card-content">
+          <li>{{title}}</li>
+          <li>{{releaseDate}}</li>
+          <li>{{actors}}</li>
+          {{#if boolian}}
+              <li>{{boolian}}</li>
+          {{/if}}
+          {{#if ratings}}
+              <li>{{rating}}</li>
+          {{/if}}
+          <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+        </div>
+      </div>
+    </div>
+{{/each}}

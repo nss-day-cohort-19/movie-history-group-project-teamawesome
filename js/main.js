@@ -4,8 +4,11 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-    sort = require("./manipulation");
-    //rateyo = require('../lib/node_modules/rateyo/min/jquery.rateyo.min');
+
+    sort = require("./manipulation"),
+    populate = require("./dom-builder"),
+    rater = require('./rating');
+
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
@@ -71,15 +74,6 @@ $("#auth-btn").click( () => {
 	}
 });
 
-// no longer needed with new requirements
-// $("#trackedMovies").click( () => {
-// 	if($("#searchInput") === "") {
-// 		loadMoviesToDOM(0);
-// 	} else {
-// 		db.searchYourMovies($("#searchInput").value);
-// 	}
-// });
-
 function buildMovieObj(id) {
     let movieObj = {
     name: $(id).data("title"),
@@ -97,12 +91,14 @@ function buildMovieObj(id) {
 $(document).on("click", ".addToWatchList", function() {
 	let newMovie = buildMovieObj(this);
 	db.addMovie(newMovie);
-	$("#id${movieId}").addClass("addedToWatch");
+	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
 });
 
 $(document).on("click", ".rating", function() {
 	let movieId = $(this).data("movie-id");
-//need logic for rating, waiting for handlebars to create, so I know what to select
+	let rater = $(this).rater();
+	let rating = rater.rater("rating");
+	db.setRating(movieId, rating);
 });
 
 $(document).on("click", ".delete", function() {
@@ -111,15 +107,16 @@ $(document).on("click", ".delete", function() {
 	//logic for reloading based on which button is selected already
 });
 
+
 db.getNewMovies('Billy Madison')
 .then( function(data) {
 	return sort.grabId(data);
-	}
-).then( function(idArray) {
+}).then( function(idArray) {
 	return db.getNewMoviesCredits(idArray);
 }).then ( function(movieObj) {
-	console.log('function', sort.concatMovie);
-	sort.concatMovie(movieObj);
+  return sort.concatMovie(movieObj);
+}).then(function(movieHolder) {
+  return populate.populateCards(movieHolder);
 });
 
 db.addMovie('Billy Madison');
