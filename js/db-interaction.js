@@ -16,8 +16,21 @@ function getNewMovies(searchVal) {
 		$.ajax({
 			url:`https://api.themoviedb.org/3/search/movie?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&query=${searchVal}&page=1&include_adult=false`
 		}).done(function(movieData){
-			resolve(movieData);
-			// console.log('moviedata', movieData);
+			let moviesArray = [];
+			console.log("movieData results", movieData.results);
+			movieData.results.forEach(function(element){
+				let movieObj = {
+					title : element.title,
+					releaseDate : element.release_date,
+					img : element.poster_path,
+					actors: "",
+					id: element.id,
+					mdn : "mdn"
+				};
+				moviesArray.push(movieObj);
+			});
+			// console.log("moviesArray", moviesArray);
+			resolve(moviesArray);
 		});
 	});
 
@@ -30,8 +43,14 @@ function getNewMoviesCredits(movieId) {
 		
 		$.ajax({
 			url:`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&page=1&include_adult=false`
-		}).done(function(movieData){
-			resolve(movieData);
+		}).done(function(movieId){
+			let actorsArray = [];
+          	var i;
+           	for (i = 0; i < 4; i++){
+               actorsArray.push(movieId.cast[i].name);
+           	}
+           	// console.log("actorsArray", actorsArray);
+			resolve(actorsArray);
 		});
 	});
 
@@ -49,7 +68,8 @@ function getMyMovies(user, searchVal) {
 
 }
 
-function addMovie(movieObj) {
+
+function addMovieToFB(movieObj) {
 	console.log("add movie", movieObj);
 	return new Promise(function(resolve, reject){
 		$.ajax({
@@ -108,7 +128,7 @@ module.exports = {
   getNewMovies,//query movie db api
   getNewMoviesCredits, //query movie db for actors
   getMyMovies,//query firebase
-  addMovie,//add to watchlist
+  addMovieToFB,//add to watchlist
   deleteMovie, //delete from firebase
   setRating //toggle boolean for watched
 };

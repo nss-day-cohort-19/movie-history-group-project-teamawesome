@@ -2,11 +2,28 @@
 
 let $ = require('jquery'),
     db = require("./db-interaction"),
+    Handlebars = require('hbsfy/runtime'),
     templates = require("./dom-builder"),
     user = require("./user"),
     sort = require("./manipulation"),
     populate = require("./dom-builder"),
     rater = require('./rating');
+
+// Handlebars helper that works with bootstrap grid system to form rows between every 3 items.
+Handlebars.registerHelper('grouped_each', function(every, context, options) {
+    var out = "", subcontext = [], i;
+    if (context && context.length > 0) {
+        for (i = 0; i < context.length; i++) {
+            if (i > 0 && i % every === 0) {
+                out += options.fn(subcontext);
+                subcontext = [];
+            }
+            subcontext.push(context[i]);
+        }
+        out += options.fn(subcontext);
+    }
+    return out;
+});
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
@@ -43,19 +60,41 @@ $("#showWatched").click( () => {
 });
 
 $("#showUnwatched").click( () => {
-	//highlight button
-	loadMoviesToDOM(1);
+	loadMoviesToDOM();
 });
 
 $("#unTracked").click( () => {
-	//hightlight button
-	getNewMovies($("#searchInput").value);
+	let input = $("#searchInput").val();
+		// console.log("input", input);
+		db.getNewMovies(input)
+		.then(function(moviesArray){
+			moviesArray.forEach(function(element){
+				// console.log("element", element);
+				db.getNewMoviesCredits(element.id)
+				.then(function(actorsArray){
+					element.actors = actorsArray;
+					populate.populateCards(moviesArray);
+				});
+			});
+		});
 });
 
 $("#searchInput").keyup( (keyin) => {
 	if(keyin.keyCode == 13) {
 		//highlight  "show untracked" button
-		getNewMovies($("#searchInput").value);
+		let input = $("#searchInput").val();
+		// console.log("input", input);
+		db.getNewMovies(input)
+		.then(function(moviesArray){
+			moviesArray.forEach(function(element){
+				// console.log("element", element);
+				db.getNewMoviesCredits(element.id)
+				.then(function(actorsArray){
+					element.actors = actorsArray;
+					populate.populateCards(moviesArray);
+				});
+			});
+		});
 	}
 });
 
@@ -94,10 +133,39 @@ function buildMovieObj(id) {
   return movieObj;
 }
 
-$(document).on("click", ".addToWatchList", function() {
-	let newMovie = buildMovieObj(this);
-	db.addMovie(newMovie);
-	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
+// $(document).on("click", ".addToWatchList", function() {
+// 	let newMovie = buildMovieObj(this);
+// 	db.addMovie(newMovie);
+// 	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
+// });
+
+$(document).on('click', ".addtowatch", function(event){
+    let watchAdd= event.target.parentElement;
+    let title= watchAdd.querySelector(".cardTitle").innerText;
+    let date= watchAdd.querySelector(".cardDate").innerText;
+    let actors= watchAdd.querySelector(".cardActors").innerText;
+    let card= watchAdd.closest(".card");
+    let poster= card.querySelector('.cardImages').src;
+
+    //console.log("poster shit", poster);
+    let userName= user.getUser();
+    if(userName=== null){
+        console.log("no valid user");
+        alert("You must be logged in to add to your watch list");
+    }else{
+    var addToWatchlistObj = {
+        title: title,
+        actors: actors,
+        date: date,
+        poster: poster,
+        stars: null,
+        boolean: false,
+        fb: "fb",
+        user: userName
+    };
+    console.log(addToWatchlistObj);
+    db.addMovieToFB(addToWatchlistObj);
+    }
 });
 
 $(document).on("click", ".rating", function() {
@@ -114,15 +182,5 @@ $(document).on("click", ".delete", function() {
 });
 
 
-db.getNewMovies('drama')
-.then( function(data) {
-	return sort.grabId(data);
-}).then( function(idArray) {
-	return db.getNewMoviesCredits(idArray);
-}).then ( function(movieObj) {
-  return sort.concatMovie(movieObj);
-}).then(function(movieHolder) {
-  return populate.populateCards(movieHolder);
-});
 
-db.addMovie('Billy Madison');
+// db.addMovie('Billy Madison');

@@ -4,7 +4,9 @@ function getKey() {
   return {
     apiKey: "AIzaSyCPKixA-kqlcaeT4eiKyqX2mcHpxvu95kM",
     authDomain: "movie-history-2057a.firebaseapp.com",
-    databaseURL: "https://movie-history-2057a.firebaseio.com"
+    databaseURL: "https://movie-history-2057a.firebaseio.com",
+    creditURL: "https://api.themoviedb.org/3/movie/",
+    endCreditURL: "/credits?api_key=AIzaSyCPKixA-kqlcaeT4eiKyqX2mcHpxvu95kM"
   };
 }
 
