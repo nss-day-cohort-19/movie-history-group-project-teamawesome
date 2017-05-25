@@ -143,6 +143,7 @@ $(document).on('click', ".addtowatch", function(event){
         user: userName
     };
     console.log(addToWatchlistObj);
+    return addToWatchlistObj;
 });
 
 $(document).on("click", ".rating", function() {
