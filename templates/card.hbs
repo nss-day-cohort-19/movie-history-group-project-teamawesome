@@ -16,9 +16,9 @@
           {{/if}}
         </div>
         <div class="card-content">
-          <li>{{title}}</li>
-          <li>{{releaseDate}}</li>
-          <li>
+          <li class="cardTitle">{{title}}</li>
+          <li class="cardDate">{{releaseDate}}</li>
+          <li class="cardActors">
             {{#actors}}
               {{this}}
             {{/actors}}
@@ -30,7 +30,7 @@
             <li>{{rating}}</li>
           {{/if}} 
           {{#if mdn}}
-          <a class="waves-effect waves-light btn blue-grey lighten-2"><i class="material-icons left">add</i>Watchlist</a>
+          <a class="waves-effect waves-light btn blue-grey lighten-2 addtowatch"><i class="material-icons left">add</i>Watchlist</a>
           {{else}}
           <a class="waves-effect waves-light btn blue-grey lighten-2"><i class="material-icons left">add</i>STARS</a>
           {{/if}}

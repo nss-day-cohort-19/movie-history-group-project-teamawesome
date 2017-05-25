@@ -116,10 +116,33 @@ function buildMovieObj(id) {
   return movieObj;
 }
 
-$(document).on("click", ".addToWatchList", function() {
-	let newMovie = buildMovieObj(this);
-	db.addMovie(newMovie);
-	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
+// $(document).on("click", ".addToWatchList", function() {
+// 	let newMovie = buildMovieObj(this);
+// 	db.addMovie(newMovie);
+// 	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
+// });
+
+$(document).on('click', ".addtowatch", function(event){
+    let watchAdd= event.target.parentElement;
+    let title= watchAdd.querySelector(".cardTitle").innerText;
+    let date= watchAdd.querySelector(".cardDate").innerText;
+    let actors= watchAdd.querySelector(".cardActors").innerText;
+    let card= watchAdd.closest(".card");
+    let poster= card.querySelector('.cardImages').src;
+
+    //console.log("poster shit", poster);
+    let userName= user.getUser();
+    var addToWatchlistObj = {
+        title: title,
+        actors: actors,
+        date: date,
+        poster: poster,
+        stars: null,
+        boolean: false,
+        fb: "fb",
+        user: userName
+    };
+    console.log(addToWatchlistObj);
 });
 
 $(document).on("click", ".rating", function() {
