@@ -60,7 +60,7 @@ $("#showWatched").click( () => {
 });
 
 $("#showUnwatched").click( () => {
-	
+	loadMoviesToDOM();
 });
 
 $("#unTracked").click( () => {
@@ -149,6 +149,10 @@ $(document).on('click', ".addtowatch", function(event){
 
     //console.log("poster shit", poster);
     let userName= user.getUser();
+    if(userName=== null){
+        console.log("no valid user");
+        alert("You must be logged in to add to your watch list");
+    }else{
     var addToWatchlistObj = {
         title: title,
         actors: actors,
@@ -160,6 +164,8 @@ $(document).on('click', ".addtowatch", function(event){
         user: userName
     };
     console.log(addToWatchlistObj);
+    db.addMovieToFB(addToWatchlistObj);
+    }
 });
 
 $(document).on("click", ".rating", function() {
