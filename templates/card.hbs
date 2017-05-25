@@ -10,7 +10,10 @@
           </span>
           {{else}}
           {{/if}} 
+          {{#if img}}
           <img class="cardImages" src="http://image.tmdb.org/t/p/w342/{{img}}" alt="{{title}}"> 
+          {{else}}
+          {{/if}}
         </div>
         <div class="card-content">
           <li>{{title}}</li>
