@@ -1,3 +1,7 @@
+.breadcrumb:before
+	color: black
+.cardImages
+	max-width: 100%
 
 .hidden
 	display: none
@@ -12,7 +16,7 @@
 	padding: 0
 
 
-.c-rating__item 
+.c-rating__item
 	-webkit-box-flex: 0
 	-webkit-flex: 0 0 24px
 	-ms-flex: 0 0 24px
@@ -24,8 +28,26 @@
 
 
 .c-rating__item:hover,
-.c-rating__item.is-active 
+.c-rating__item.is-active
 	background-position: -24px 0
 
+.rating
+	span
+		cursor: pointer
+		font-size: 25px
+		padding: 0 10px
+		color: black
+		opacity: .5
+		transition: all 150ms
+		display: inline-block
+		transform: rotateX(45deg)
+		transform-origin: center bottom
+		width: 20px
+		height: 20px
 
-
+.rating
+	span.clicked
+		color: #3d94ff
+		opacity: 1
+		transform: rotateX(0deg)
+		text-shadow: 0 0 30px #ffc
