@@ -114,7 +114,7 @@ $(document).on("click", ".delete", function() {
 });
 
 
-db.getNewMovies('Billy Madison')
+db.getNewMovies('drama')
 .then( function(data) {
 	return sort.grabId(data);
 }).then( function(idArray) {
