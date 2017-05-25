@@ -3,30 +3,25 @@
 <head>
 	<title>Movie History</title>
 	<link rel="stylesheet" href="lib/node_modules/materialize-css/dist/css/materialize.min.css">
-	<link rel="stylesheet" type="text/css" href="/lib/node_modules/rateyo/min/jquer.rateyo.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <nav>
-    <div class="nav-wrapper">
-      <ul id="nav-mobile" class="left">
-		<li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</li>
-        <li><input type="text" id="searchInput" placeholder="Search"></li>
-        <li><a href="#" id="findNewMovies">Find New Movies</a></li>
-		<li>&nbsp;</li>
-        <li><a href="#" id="searchYourMovies">Search Your Movies</a></li>
-      </ul>
-	  <ul id="nav-mobile" class="right">
-        <li><a href="#"id="googleLogIn">Log-In</a></li>
-		<li>&nbsp;</li>
-        <li><a href="#" id="googleLogOut">Log-Out</a></li>
-      </ul>
-    </div>
-  </nav>
+  <nav class="nav-extended">
+    <div class="nav-wrapper row">
+      <div class="col s1"> </div><input class="col s7" type="text" id="searchInput" placeholder="Search"><div class="col s1"></div>
+	  <div class="col s3"><a href="#" id="googleLogIn">Log-In/Register/Logout</a></div>
+    </div></nav>
   <main>
-	  <div id="mainContainer" class="container">
-		  <div id="filterDiv" class="row"></div>
+  	<div id="welcome"><h1>Welcome to this movie history thing we made</h1></div>
+	  <div id="mainContainer" class="container hidden">
+		<div id="breadcrumb">Movie History</div>
+		<div id="filterDiv" class="row">
+			<a class="waves-effect waves-light btn" id="unTracked">Show Untracked</a>
+			<a class="waves-effect waves-light btn" id="showUnwatched">Show Unwatched</a>
+			<a class="waves-effect waves-light btn" id="showWatched">Show Watched</a>
+			<a class="waves-effect waves-light btn" id="showFavorites">Favorites</a>
+  	 	 </div>
 		  <div id="movieDiv" class="row"></div>
 	  </div>
   </main>
