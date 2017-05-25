@@ -4,8 +4,7 @@ let $ = require('jquery'),
     db = require("./db-interaction"),
     templates = require("./dom-builder"),
     user = require("./user"),
-    sort = require("./manipulation"),
-    rateyo = require('../lib/node_modules/rateyo/min/jquery.rateyo.min');
+    sort = require("./manipulation");
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
@@ -43,14 +42,14 @@ $("#showUnwatched").click( () => {
 
 $("#unTracked").click( () => {
 	//hightlight button
-	let newMovies = themoviedb($("#searchInput").value);
+	let newMovies = sort($("#searchInput").value);
 	templates.newMovieList(newMovies);
 });
 
 $("#searchInput").keyup( (keyin) => {
 	if(keyin.keyCode == 13) {
 		//highlight  "show untracked" button
-		let newMovies = themoviedb($("#searchInput").value);
+		let newMovies = sort($("#searchInput").value);
 		templates.newMovieList(newMovies);
 	}
 });
@@ -69,15 +68,6 @@ $("#logging").click( () => {
 		$("#movieDiv").html("");
 	}
 });
-
-// no longer needed with new requirements
-// $("#trackedMovies").click( () => {
-// 	if($("#searchInput") === "") {
-// 		loadMoviesToDOM(0);
-// 	} else {
-// 		db.searchYourMovies($("#searchInput").value);
-// 	}
-// });
 
 function buildMovieObj(id) {
     let movieObj = {
@@ -110,13 +100,20 @@ $(document).on("click", ".delete", function() {
 	//logic for reloading based on which button is selected already
 });
 
-db.getNewMovies('Rambo')
+db.getNewMovies('billy madison')  // sends Querry To Db getter -- returns raw movie object from movieDB
 .then( function(data) {
-	return sort.grabId(data);
-	}
-).then( function(idArray) {
-	return db.getNewMoviesCredits(idArray);
-}).then ( function(movieObj) {
-	console.log('function', sort.concatMovie);
-	sort.concatMovie(movieObj);
+	return sort.grabId(data);  // send movie object or objects to manipulation to filter out id's -- returns list of ids or id
+}).then( function(bigObject) {
+	return db.getNewMoviesCredits(bigObject); // sends id query to Db getter -- returns object of cast/crew for each movie
+}).then ( function(movieActorObj) {
+	return sort.concatMovie(movieActorObj); // sends cast/crew object to manipulator -- returns sweet filtered object data
 });
+
+// db.getNewMovies('monsters inc').then( function(data) {
+// 	return sort.grabId(data);  // send movie object or objects to manipulation to filter out id's -- returns list of ids or id
+// 	}
+// ).then( function(idArray) {
+// 	return db.getNewMoviesCredits(idArray); // sends id query to Db getter -- returns object of cast/crew for each movie
+// }).then ( function(movieObj) {
+// 	sort.concatMovie(movieObj); // sends cast/crew object to manipulator -- returns sweet filtered object data
+// });

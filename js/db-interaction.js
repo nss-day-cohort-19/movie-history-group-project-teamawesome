@@ -25,16 +25,25 @@ function getNewMovies(searchVal) {
 
 
 //get new movie credits from movie db api
-function getNewMoviesCredits(idArray) {
+function getNewMoviesCredits(bigObject) {
 	return new Promise(function(resolve,reject){
-		idArray.forEach(function(i) {
+		let castArray = [];
+		let movieObj = {};
+		movieObj.holder = bigObject.holder;
+		bigObject.idArray.forEach(function(i) {
+				console.log('what im looking for', i);
 			$.ajax({
-				url:`https://api.themoviedb.org/3/movie/${i}/credits?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&page=1&include_adult=false`
-			}).done(function(movieData){
-				resolve(movieData);
-				// console.log('actor info', movieData);
+				url:`https://api.themoviedb.org/3/movie/${i}/credits?api_key=08c884af213d59e7fc0438a466fac5ab&language=en-US&page=1&include_adult=false`,
+				success: function(actorData) {
+					castArray.push(actorData);
+					// console.log('in loop', actorData);
+				}
 			});
 		});
+		// console.log(idArray);
+		movieObj.actorArray = castArray;
+		// console.log('big ob at get credits', movieObj);
+		resolve(movieObj);
 	});
 }
 
