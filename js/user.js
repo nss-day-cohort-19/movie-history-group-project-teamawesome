@@ -3,7 +3,7 @@
  	 provider = new firebase.auth.GoogleAuthProvider(),
  	 currentUser = null;
 
- 
+
 
 //moment you log in, means state change in app
 
@@ -18,7 +18,10 @@ firebase.auth().onAuthStateChanged(function(user){
 });
 
 function logInGoogle() {
- 	return firebase.auth().signInWithPopup(provider);
+ 	return new Promise ( (resolve, reject) => {
+ 		firebase.auth().signInWithPopup(provider);
+ 		resolve();
+ 	});
 }
 
 function logOut(){
