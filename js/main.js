@@ -43,7 +43,7 @@ $("#showWatched").click( () => {
 });
 
 $("#showUnwatched").click( () => {
-	
+	loadMoviesToDOM();
 });
 
 $("#unTracked").click( () => {
@@ -143,7 +143,7 @@ $(document).on('click', ".addtowatch", function(event){
         user: userName
     };
     console.log(addToWatchlistObj);
-    return addToWatchlistObj;
+    db.addMovieToFB(addToWatchlistObj);
 });
 
 $(document).on("click", ".rating", function() {

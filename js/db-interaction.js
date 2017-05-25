@@ -68,7 +68,7 @@ function getMyMovies(user, searchVal) {
 
 }
 
-function addMovie(movieObj) {
+function addMovieToFB(movieObj) {
 	console.log("add movie", movieObj);
 	return new Promise(function(resolve, reject){
 		$.ajax({
@@ -127,7 +127,7 @@ module.exports = {
   getNewMovies,//query movie db api
   getNewMoviesCredits, //query movie db for actors
   getMyMovies,//query firebase
-  addMovie,//add to watchlist
+  addMovieToFB,//add to watchlist
   deleteMovie, //delete from firebase
   setRating //toggle boolean for watched
 };
