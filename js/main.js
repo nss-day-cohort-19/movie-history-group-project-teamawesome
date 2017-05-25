@@ -166,6 +166,10 @@ $(document).on('click', ".addtowatch", function(event){
     console.log(addToWatchlistObj);
     db.addMovieToFB(addToWatchlistObj);
     }
+    $(".x-button").click(function() {
+        $("#movieDiv").removeChild(event.tagert.closest(".card"));
+    });
+
 });
 
 // $(document).on("click", ".rating", function() {
