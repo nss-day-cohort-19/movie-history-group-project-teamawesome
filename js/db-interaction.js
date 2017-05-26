@@ -112,7 +112,7 @@ function getMovie(movieId) {
 // GET - Requests/read data from a specified resource
 // PUT - Update data to a specified resource. Takes two parameters.
 //PATCH - update only the changes
-function setRating(movieObj, movieId, rating) {
+function setRating(movieObj, movieId) {
 	return new Promise(function(resolve,reject){
 		$.ajax({
 			url:`${firebase.getFBsettings().databaseURL}/movies/${movieId}.json`,

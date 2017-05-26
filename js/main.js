@@ -61,6 +61,31 @@ $("#showUnwatched").click( () => {
     loadMoviesToDOM();
 });
 
+$(document).on( "click", ".star", function(event){
+
+    let card= event.target.closest(".card");
+    let title= card.querySelector(".cardTitle").innerText;
+    let date= card.querySelector(".cardDate").innerText;
+    let actors= card.querySelector(".cardActors").innerText;
+    let poster= card.querySelector('.cardImages').src;
+    let objId = card.id;
+    let rated = $(this).data("count");
+
+    var addToWatchedObj = {
+        title: title,
+        actors: actors,
+        releaseDate: date,
+        poster: poster,
+        ratings: rated,
+        boolean: true,
+        fb: "fb",
+        id: objId
+    };
+
+    console.log("addToWatchedObj", addToWatchedObj);
+	db.setRating(addToWatchedObj, addToWatchedObj.id);
+});
+
 $("#unTracked").click( () => {
 	let input = $("#searchInput").val();
 		// console.log("input", input);
