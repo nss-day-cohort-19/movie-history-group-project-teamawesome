@@ -27,25 +27,15 @@ Handlebars.registerHelper('grouped_each', function(every, context, options) {
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
+    console.log("current user is", currentUser);
 	db.getMyMovies(currentUser)
-	.then( (data) => {
+	.then(function(data) {
+        console.log("the data on loadMoviesToDOM is", data);
 		var allMovies = Object.keys(data);  //give keys to data to id buttons
 		allMovies.forEach( (key) => {
 			data[key].id = key;
 		});
-		var movies = [];
-		data.forEach((key) => {
-			if(type === 1 && !data[key].watched) {  //filter data based on what kind button is pushed
-				movies.push(data[key]);
-			}else if(type === 2 && data[key].watched) {
-				movies.push(data[key]);
-			}else if(type === 3 && data[key].rating > 7) {
-				movies.push(data[key]);
-			} else {
-				movies.push(data[key]);
-			}
-		});
-		templates.movieList(movies);
+		templates.populateCards(data);
 	});
 }
 
@@ -54,13 +44,15 @@ function getNewMovies (search) {
 	templates.newMovieList(newMovieList);
 }
 
+
+
 $("#showWatched").click( () => {
 	//highlight button
 	loadMoviesToDOM(2);
 });
 
 $("#showUnwatched").click( () => {
-	loadMoviesToDOM();
+    loadMoviesToDOM();
 });
 
 $("#unTracked").click( () => {
@@ -165,6 +157,7 @@ $(document).on('click', ".addtowatch", function(event){
     };
     console.log(addToWatchlistObj);
     db.addMovieToFB(addToWatchlistObj);
+    return addToWatchlistObj;
     }
 });
 
