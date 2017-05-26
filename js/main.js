@@ -2,33 +2,46 @@
 
 let $ = require('jquery'),
     db = require("./db-interaction"),
+    Handlebars = require('hbsfy/runtime'),
     templates = require("./dom-builder"),
     user = require("./user"),
     sort = require("./manipulation"),
-    populate = require("./dom-builder"),
-    rater = require('./rating');
+    populate = require("./dom-builder");
+    // rater = require('./rating');
+
+// Handlebars helper that works with bootstrap grid system to form rows between every 3 items.
+Handlebars.registerHelper('grouped_each', function(every, context, options) {
+    var out = "", subcontext = [], i;
+    if (context && context.length > 0) {
+        for (i = 0; i < context.length; i++) {
+            if (i > 0 && i % every === 0) {
+                out += options.fn(subcontext);
+                subcontext = [];
+            }
+            subcontext.push(context[i]);
+        }
+        out += options.fn(subcontext);
+    }
+    return out;
+});
 
 function loadMoviesToDOM (type) {
 	let currentUser = user.getUser();
+    console.log("current user is", currentUser);
 	db.getMyMovies(currentUser)
-	.then( (data) => {
+	.then(function(data) {
+        console.log("the data on loadMoviesToDOM is", data);
 		var allMovies = Object.keys(data);  //give keys to data to id buttons
+		let myMoviesArray = [];
 		allMovies.forEach( (key) => {
 			data[key].id = key;
+			myMoviesArray.push(data[key]);
 		});
-		var movies = [];
-		data.forEach((key) => {
-			if(type === 1 && !data[key].watched) {  //filter data based on what kind button is pushed
-				movies.push(data[key]);
-			}else if(type === 2 && data[key].watched) {
-				movies.push(data[key]);
-			}else if(type === 3 && data[key].rating > 7) {
-				movies.push(data[key]);
-			} else {
-				movies.push(data[key]);
-			}
-		});
-		templates.movieList(movies);
+
+		// console.log('data', data);
+
+		console.log("myMoviesArray", myMoviesArray);
+		templates.populateCards(myMoviesArray);
 	});
 }
 
@@ -37,25 +50,74 @@ function getNewMovies (search) {
 	templates.newMovieList(newMovieList);
 }
 
+
+
 $("#showWatched").click( () => {
 	//highlight button
 	loadMoviesToDOM(2);
 });
 
 $("#showUnwatched").click( () => {
-	//highlight button
-	loadMoviesToDOM(1);
+    loadMoviesToDOM();
+});
+
+$(document).on( "click", ".star", function(event){
+
+    let card= event.target.closest(".card");
+    let title= card.querySelector(".cardTitle").innerText;
+    let date= card.querySelector(".cardDate").innerText;
+    let actors= card.querySelector(".cardActors").innerText;
+    let poster= card.querySelector('.cardImages').src;
+    let objId = card.id;
+    let rated = $(this).data("count");
+
+    var addToWatchedObj = {
+        title: title,
+        actors: actors,
+        releaseDate: date,
+        poster: poster,
+        ratings: rated,
+        boolean: true,
+        fb: "fb",
+        id: objId
+    };
+
+    console.log("addToWatchedObj", addToWatchedObj);
+	db.setRating(addToWatchedObj, addToWatchedObj.id);
 });
 
 $("#unTracked").click( () => {
-	//hightlight button
-	getNewMovies($("#searchInput").value);
+	let input = $("#searchInput").val();
+		// console.log("input", input);
+		db.getNewMovies(input)
+		.then(function(moviesArray){
+			moviesArray.forEach(function(element){
+				// console.log("element", element);
+				db.getNewMoviesCredits(element.id)
+				.then(function(actorsArray){
+					element.actors = actorsArray;
+					populate.populateCards(moviesArray);
+				});
+			});
+		});
 });
 
 $("#searchInput").keyup( (keyin) => {
 	if(keyin.keyCode == 13) {
 		//highlight  "show untracked" button
-		getNewMovies($("#searchInput").value);
+		let input = $("#searchInput").val();
+		// console.log("input", input);
+		db.getNewMovies(input)
+		.then(function(moviesArray){
+			moviesArray.forEach(function(element){
+				// console.log("element", element);
+				db.getNewMoviesCredits(element.id)
+				.then(function(actorsArray){
+					element.actors = actorsArray;
+					populate.populateCards(moviesArray);
+				});
+			});
+		});
 	}
 });
 
@@ -68,15 +130,19 @@ $("#auth-btn").click( () => {
 	if(user.getUser() === null) {  //if there is no user logIn, otherwise logout
 		user.logInGoogle().
 		then( () => {
-			$("#mainContainer").removeClass("hidden");
-			$("#welcome").addClass("hidden");
+			$("#mainContainer").removeClass("hide");
+			$(".headerTitle").addClass("hide");
+            $("#movieDiv").removeClass("hide");
+            $("#filterDiv").removeClass("hide");
 			},
 			() => { window.alert("Failed to log in");}
 		);
 	}else {
 		user.logOut();
-		$("#mainContainer").addClass("hidden");
-		$("#movieDiv").html("");
+		$("#mainContainer").addClass("hide");
+        $(".headerTitle").removeClass("hide");
+		$("#movieDiv").addClass("hide");
+        $("#filterDiv").addClass("hide");
 	}
 });
 
@@ -94,17 +160,59 @@ function buildMovieObj(id) {
   return movieObj;
 }
 
-$(document).on("click", ".addToWatchList", function() {
-	let newMovie = buildMovieObj(this);
-	db.addMovie(newMovie);
-	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
+// $(document).on("click", ".addToWatchList", function() {
+// 	let newMovie = buildMovieObj(this);
+// 	db.addMovie(newMovie);
+// 	$("#id${movieId}").addClass("addedToWatch"); //maybe make this class grey out
+// });
+
+$(document).on('click', ".addtowatch", function(event){
+    let watchAdd= event.target.parentElement;
+    let title= watchAdd.querySelector(".cardTitle").innerText;
+    let date= watchAdd.querySelector(".cardDate").innerText;
+    let actors= watchAdd.querySelector(".cardActors").innerText;
+    let card= watchAdd.closest(".card");
+    let poster= card.querySelector('.cardImages').src;
+
+    //console.log("poster shit", poster);
+    let userName= user.getUser();
+    if(userName=== null){
+        console.log("no valid user");
+        alert("You must be logged in to add to your watch list");
+    }else{
+    var addToWatchlistObj = {
+        title: title,
+        actors: actors,
+        releaseDate: date,
+        poster: poster,
+        ratings: null,
+        boolean: false,
+        fb: "fb",
+        user: userName
+    };
+    console.log(addToWatchlistObj);
+    db.addMovieToFB(addToWatchlistObj);
+    return addToWatchlistObj;
+    }
 });
 
-$(document).on("click", ".rating", function() {
-	let movieId = $(this).data("movie-id");
-	let rater = $(this).rater();
-	let rating = rater.rater("rating");
-	db.setRating(movieId, rating);
+// $(document).on("click", ".rating", function() {
+// 	let movieId = $(this).data("movie-id");
+// 	let rater = $(this).rater();
+// 	let rating = rater.rater("rating");
+// 	db.setRating(movieId, rating);
+// });
+
+$(document).on('click', '.card', function(event) {
+  let stars = $(event.currentTarget).find('.rating .star');
+    for (let i = 0; i < stars.length; i++) {
+      if ($(event.target).data('count') >= $(stars[i]).data('count')) {
+        $(stars[i]).addClass('clicked');
+      } else {
+        $(stars[i]).removeClass('clicked');
+      }
+    }
+
 });
 
 $(document).on("click", ".delete", function() {
@@ -114,15 +222,5 @@ $(document).on("click", ".delete", function() {
 });
 
 
-db.getNewMovies('drama')
-.then( function(data) {
-	return sort.grabId(data);
-}).then( function(idArray) {
-	return db.getNewMoviesCredits(idArray);
-}).then ( function(movieObj) {
-  return sort.concatMovie(movieObj);
-}).then(function(movieHolder) {
-  return populate.populateCards(movieHolder);
-});
 
-db.addMovie('Billy Madison');
+// db.addMovie('Billy Madison');
