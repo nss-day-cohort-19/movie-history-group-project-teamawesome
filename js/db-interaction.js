@@ -57,15 +57,15 @@ function getNewMoviesCredits(movieId) {
 }
 
 //get my movies from firebase
-function getMyMovies(user, searchVal) {
+function getMyMovies(user) {
 	return new Promise(function(resolve,reject){
 		$.ajax({
-			url:`${firebase.getFBsettings().databaseURL}/songs.json?orderBy="uid"&equalTo="${user}"`
+			url:`${firebase.getFBsettings().databaseURL}/movies.json?orderBy="user"&equalTo="${user}"`,
+			type: "GET"
 		}).done(function(movieData){
 			resolve(movieData);
 		});
 	});
-
 }
 
 
