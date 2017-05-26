@@ -32,10 +32,16 @@ function loadMoviesToDOM (type) {
 	.then(function(data) {
         console.log("the data on loadMoviesToDOM is", data);
 		var allMovies = Object.keys(data);  //give keys to data to id buttons
+		let myMoviesArray = [];
 		allMovies.forEach( (key) => {
 			data[key].id = key;
+			myMoviesArray.push(data[key]);
 		});
-		templates.populateCards(data);
+
+		// console.log('data', data);
+
+		console.log("myMoviesArray", myMoviesArray);
+		templates.populateCards(myMoviesArray);
 	});
 }
 
@@ -148,9 +154,9 @@ $(document).on('click', ".addtowatch", function(event){
     var addToWatchlistObj = {
         title: title,
         actors: actors,
-        date: date,
+        releaseDate: date,
         poster: poster,
-        stars: null,
+        ratings: null,
         boolean: false,
         fb: "fb",
         user: userName
