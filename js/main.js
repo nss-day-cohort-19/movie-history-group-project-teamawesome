@@ -130,15 +130,19 @@ $("#auth-btn").click( () => {
 	if(user.getUser() === null) {  //if there is no user logIn, otherwise logout
 		user.logInGoogle().
 		then( () => {
-			$("#mainContainer").removeClass("hidden");
-			$("#welcome").addClass("hidden");
+			$("#mainContainer").removeClass("hide");
+			$(".headerTitle").addClass("hide");
+            $("#movieDiv").removeClass("hide");
+            $("#filterDiv").removeClass("hide");
 			},
 			() => { window.alert("Failed to log in");}
 		);
 	}else {
 		user.logOut();
-		$("#mainContainer").addClass("hidden");
-		$("#movieDiv").html("");
+		$("#mainContainer").addClass("hide");
+        $(".headerTitle").removeClass("hide");
+		$("#movieDiv").addClass("hide");
+        $("#filterDiv").addClass("hide");
 	}
 });
 
