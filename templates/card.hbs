@@ -2,7 +2,7 @@
   <div class="row">
     {{#each this}}
     <div class="col lg2 m4 s6">
-      <div class="card">
+      <div class="card" id={{id}}>
         <div class="card-image">
           {{#if fb}}
           <span>
@@ -39,7 +39,6 @@
           <a class="waves-effect waves-light btn blue-grey lighten-2 addtowatch"><i class="material-icons left">add</i>Watchlist</a>
           {{else}}
           <div class="rating">
-              <span class="star" data-count="0">★</span>
               <span class="star" data-count="1">★</span>
               <span class="star" data-count="2">★</span>
               <span class="star" data-count="3">★</span>
@@ -49,6 +48,7 @@
               <span class="star" data-count="7">★</span>
               <span class="star" data-count="8">★</span>
               <span class="star" data-count="9">★</span>
+              <span class="star" data-count="10">★</span>
           </div>
           {{/if}}
         </div>
